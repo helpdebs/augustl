@@ -14,12 +14,13 @@
   --line:#e6dcf7; --soft:#f7f4fd; --pill:#cbb9ec; --note:#fdf6d3; --noteline:#efdf9f;
   --pink:#d96aa8; --green:#3f8f52; --red:#c05a7a; --mut:#8b80a8;
 }
-html,body{height:100%;}
+html{height:100%;}
+html{scroll-padding-bottom:130px;scroll-behavior:smooth;}
 body{
   font-family:'Poppins',sans-serif; color:var(--ink);
   background:linear-gradient(135deg,#dceaf9 0%,#dfdcf7 45%,#e6d9f6 100%);
   background-attachment:fixed;
-  min-height:100%; padding:26px 20px 96px;
+  min-height:100%; padding:26px 20px 150px;
 }
 .wrap{max-width:1120px;margin:0 auto;}
 
@@ -184,7 +185,7 @@ audio{height:34px;max-width:210px;}
 .hide{display:none !important;}
 @media (max-width:860px){
   .grid2,.grid3{grid-template-columns:1fr;}
-  body{padding:14px 12px 100px;}
+  body{padding:14px 12px 160px;}
   .audiobox{display:none;}
   h1{font-size:30px;}
 }
@@ -200,6 +201,7 @@ audio{height:34px;max-width:210px;}
     <div class="body" id="app"></div>
   </div>
 </div>
+<div style="height:110px" aria-hidden="true"></div>
 
 <div class="taskbar">
   <button class="start" onclick="go('home')"><span class="sq"></span>start</button>
@@ -311,6 +313,19 @@ function tabOn(id){
 const app = document.getElementById('app');
 function setTitle(t){ document.getElementById('winTitle').textContent = t; }
 function scrollTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+const BARH = 76; // fixed taskbar + breathing room
+function ensureVisible(el){
+  if(!el) return;
+  setTimeout(()=>{
+    const r = el.getBoundingClientRect();
+    const limit = window.innerHeight - BARH;
+    const tall = r.height > (limit - 80);
+    if(r.bottom > limit || r.top < 80){
+      if(tall) window.scrollBy({top: r.top - 90, behavior:'smooth'});
+      else el.scrollIntoView({block:'center', behavior:'smooth'});
+    }
+  }, 90);
+}
 
 /* ============================ HOME ============================ */
 function go(where){
@@ -518,12 +533,13 @@ function revealL1(i){
   speak(L1_MSGS[i].full);
 }
 let quizIdx = 0, quizScore = 0;
-function renderQuiz(){
+function renderQuiz(scrollIt){
   const w = document.getElementById('quizWrap');
   if(quizIdx >= L1_QUIZ.length){
     w.innerHTML = `<div class="fb ok" style="font-size:15px"><b>Part B done — ${quizScore} out of ${L1_QUIZ.length}.</b>
       ${quizScore>=8?'That is an inbox you can survive.':'Worth doing again later — the ones you missed are the ones you will see most.'}</div>`;
     document.getElementById('l1done').classList.remove('hide');
+    if(scrollIt) ensureVisible(document.getElementById('l1done'));
     return;
   }
   const q = L1_QUIZ[quizIdx];
@@ -541,6 +557,7 @@ function renderQuiz(){
       </div>
       <div id="qfb"></div>
     </div>`;
+  if(scrollIt) ensureVisible(w.firstElementChild);
 }
 function answerQuiz(btn, choice){
   const q = L1_QUIZ[quizIdx];
@@ -555,8 +572,9 @@ function answerQuiz(btn, choice){
     `<div class="fb ${ok?'ok':'no'}" style="margin-top:10px">${ok?'Yes — ':'It is <b>'+q.a+'</b>. '}${q.why}</div>
      <div class="btnrow" style="margin-top:12px"><button class="k sec" onclick="nextQuiz()">Next →</button></div>`;
   speak(q.a.replace(/;/,' ') + '. ' + q.why);
+  ensureVisible(document.getElementById('qfb'));
 }
-function nextQuiz(){ quizIdx++; renderQuiz(); }
+function nextQuiz(){ quizIdx++; renderQuiz(true); }
 function finishL1(){
   markDone('l1'); state.score.l1 = quizScore;
   app.innerHTML = `
@@ -786,6 +804,7 @@ function l2Answer(i){
      <div class="rep" style="margin-top:12px">${sp(chosen)}<div class="tx">${chosen}<small>listen, then say it out loud once before you continue</small></div></div>
      <div class="btnrow"><button class="k sec" onclick="l2Next('${escapeQ(chosen)}')">Send &amp; continue →</button></div>`;
   speak(chosen);
+  ensureVisible(document.getElementById('l2fb'));
 }
 function l2Model(){
   const t = L2[l2i].task;
@@ -795,6 +814,7 @@ function l2Model(){
      <div class="btnrow" style="margin-top:10px"><button class="k sec" onclick="l2Next('${escapeQ(t.model)}')">Send &amp; continue →</button></div>`;
   speak(t.model);
   l2Score++;
+  ensureVisible(document.getElementById('l2fb'));
 }
 function l2Type(){
   const t = L2[l2i].task;
@@ -808,6 +828,7 @@ function l2Type(){
      <div class="fb no" style="margin-top:10px">${t.why}</div>
      <div class="btnrow" style="margin-top:11px"><button class="k sec" onclick="l2Next('${escapeQ(val)}')">Continue →</button></div>`;
   speak(t.model);
+  ensureVisible(document.getElementById('l2fb'));
 }
 function escapeQ(s){ return String(s).replace(/\\/g,'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
 function l2Next(sent){
@@ -931,6 +952,7 @@ function l3Match(i, word, btn){
   if(Object.keys(l3Sel).length === L3_MATCH.length){
     document.getElementById('matchFb').innerHTML =
       `<div class="fb ok"><b>${l3Score} out of ${L3_MATCH.length}.</b> Say all six words out loud now, then move to task 2.</div>`;
+    ensureVisible(document.getElementById('matchFb'));
   }
 }
 function l3Short(){
@@ -944,6 +966,7 @@ function l3Short(){
     </div>
     ${recRow('l3short','Record your comment')}
     <div class="btnrow" style="margin-top:12px"><button class="k pri" onclick="l3Open()">Continue to the long version →</button></div>`;
+  ensureVisible(document.getElementById('shortFb'));
 }
 function l3Open(){
   const rest = document.getElementById('l3rest');
@@ -1019,6 +1042,7 @@ function l3Done(){
     <div class="rep" style="margin-top:10px">${sp(m1)}<div class="tx">${m1}<small>to Vitor — calm always wins. Not replying is also a complete answer.</small></div></div>
     <div class="rep">${sp(m2)}<div class="tx">${m2}<small>to Sofia — <b>fair enough</b> + <b>I still think</b> is the whole formula.</small></div></div>
     <div class="btnrow" style="margin-top:16px"><button class="k pri" onclick="finishAll()">Finish the module →</button></div>`;
+  ensureVisible(document.getElementById('repFb'));
 }
 function finishAll(){
   markDone('l3');
@@ -1059,4 +1083,4 @@ function finishAll(){
 home();
 </script>
 </body>
-</html>
+</html> 
