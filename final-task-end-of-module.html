@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>final-task.exe — End of Module Training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --purple:#6b3fa0; --purple2:#8f63c8; --deep:#4d2f80; --blue:#3d7fc4; --ink:#4a4458;
+  --line:#e6dcf7; --soft:#f7f4fd; --pill:#cbb9ec; --note:#fdf6d3; --noteline:#efdf9f;
+  --pink:#d96aa8; --green:#3f8f52; --red:#c05a7a; --mut:#8b80a8;
+}
+html,body{height:100%;}
+body{
+  font-family:'Poppins',sans-serif; color:var(--ink);
+  background:linear-gradient(135deg,#dceaf9 0%,#dfdcf7 45%,#e6d9f6 100%);
+  background-attachment:fixed;
+  min-height:100%; padding:26px 20px 96px;
+}
+.wrap{max-width:1120px;margin:0 auto;}
+
+/* window chrome */
+.win{background:#fff;border-radius:12px;box-shadow:0 22px 48px rgba(80,50,130,.20);overflow:hidden;}
+.bar{height:38px;background:linear-gradient(180deg,#9a6dd4,#8256bf);display:flex;align-items:center;padding:0 12px;gap:10px;}
+.bar .sq{width:15px;height:15px;border-radius:3px;background:rgba(255,255,255,.85);}
+.bar h4{font-size:14.5px;font-weight:600;color:#fff;flex:1;letter-spacing:.1px;}
+.bar .btns{display:flex;gap:5px;}
+.bar .btn{width:26px;height:20px;border-radius:3px;background:rgba(255,255,255,.28);color:#fff;font-size:11px;
+  display:flex;align-items:center;justify-content:center;}
+.bar .btn.x{background:#5f3a94;}
+.body{background:var(--soft);padding:24px 28px 26px;}
+
+/* taskbar */
+.taskbar{position:fixed;left:0;right:0;bottom:0;height:56px;background:linear-gradient(180deg,#9a6dd4,#7f52bd);
+  display:flex;align-items:center;padding:0 14px;gap:10px;z-index:50;box-shadow:0 -6px 20px rgba(80,50,130,.18);}
+.start{background:linear-gradient(180deg,#f2ecfb,#ddd0f2);border-radius:7px;padding:7px 16px 7px 11px;font-weight:700;
+  font-style:italic;color:#4d2f80;font-size:15px;display:flex;gap:8px;align-items:center;cursor:pointer;border:none;}
+.start .sq{width:13px;height:13px;background:#fff;border-radius:3px;border:1px solid #c3b0e4;}
+.tbtn{background:rgba(255,255,255,.20);border:none;border-radius:7px;padding:8px 14px;color:#fff;font-size:13px;
+  font-family:inherit;cursor:pointer;display:flex;gap:8px;align-items:center;}
+.tbtn.on{background:rgba(255,255,255,.36);font-weight:600;}
+.tbtn:disabled{opacity:.45;cursor:not-allowed;}
+.tbtn .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.55);}
+.tbtn .dot.done{background:#b6f0b0;}
+.audiobox{margin-left:auto;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.18);
+  border-radius:7px;padding:6px 12px;}
+.audiobox label{color:#fff;font-size:11.5px;letter-spacing:.4px;text-transform:uppercase;font-weight:600;}
+.audiobox select{font-family:inherit;font-size:12px;border:none;border-radius:5px;padding:4px 6px;max-width:150px;color:#4d2f80;}
+.audiobox input[type=range]{width:90px;accent-color:#fff;}
+.audiobox .val{color:#fff;font-family:'Space Mono',monospace;font-size:12px;width:34px;}
+
+/* type */
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:2.4px;color:#8a6ac0;text-transform:uppercase;}
+h1{font-family:'Baloo 2',cursive;font-size:38px;line-height:1.12;color:var(--deep);font-weight:700;margin:8px 0 10px;}
+h1 .b{color:var(--blue);}
+h2{font-family:'Baloo 2',cursive;font-size:27px;color:var(--deep);font-weight:700;line-height:1.15;margin:2px 0 8px;}
+h3{font-family:'Baloo 2',cursive;font-size:20px;color:var(--deep);font-weight:600;line-height:1.2;}
+p.lead{font-size:16px;line-height:1.55;}
+.lead b{color:var(--purple);font-weight:600;}
+.rounder{font-size:13.5px;font-weight:700;color:#7a55b5;margin:0 0 8px;letter-spacing:.2px;}
+.mini{font-size:13px;color:var(--mut);line-height:1.45;}
+em{font-style:italic;}
+.p{color:var(--purple);font-weight:600;} .bl{color:var(--blue);font-weight:600;}
+
+.card{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:15px 17px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.note{background:var(--note);border:1.5px solid var(--noteline);border-radius:10px;padding:13px 16px;
+  font-size:14.5px;line-height:1.5;color:#6a5a22;}
+.note b{color:#8a6a12;}
+
+/* buttons */
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+button.k{font-family:inherit;font-size:15px;font-weight:600;border-radius:9px;padding:11px 20px;cursor:pointer;
+  border:1.5px solid transparent;transition:transform .06s ease;}
+button.k:active{transform:translateY(1px);}
+button.k.pri{background:#d6f0d2;color:#2f6b34;border-color:#b6e0b0;}
+button.k.sec{background:#d5e7f8;color:#255b8e;border-color:#aecdea;}
+button.k.ghost{background:#fff;color:var(--purple);border-color:var(--pill);}
+button.k:disabled{opacity:.5;cursor:not-allowed;}
+.speak{background:#efe7fb;border:1.5px solid #d8c9f2;color:var(--purple);border-radius:999px;width:34px;height:34px;
+  font-size:15px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:none;
+  font-family:inherit;line-height:1;}
+.speak:hover{background:#e4d7f8;}
+.speak.sm{width:28px;height:28px;font-size:13px;}
+.speak.playing{background:#cbb9ec;color:#fff;}
+
+/* progress */
+.prog{height:9px;border-radius:99px;background:#e9e2f7;overflow:hidden;}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#a97fdd,#7ab0e6);width:0%;transition:width .3s;}
+.stepline{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--mut);}
+.badge{font-family:'Space Mono',monospace;font-size:12px;background:#efe7fb;color:var(--purple);border-radius:6px;
+  padding:3px 9px;}
+
+/* level cards */
+.lvl{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:0;overflow:hidden;
+  display:flex;flex-direction:column;}
+.lvl .top{padding:16px 18px 14px;}
+.lvl .n{font-family:'Space Mono',monospace;font-size:12px;color:#a99bc7;}
+.lvl h3{font-size:23px;margin:2px 0 6px;}
+.lvl p{font-size:14.4px;line-height:1.5;color:#5b5470;}
+.lvl .foot{margin-top:auto;padding:12px 18px 15px;border-top:1px solid #f2edfb;display:flex;align-items:center;gap:10px;}
+.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;}
+.tag{font-size:12px;border:1.4px solid var(--line);border-radius:999px;padding:4px 11px;color:#5a4a8c;background:#fbfaff;}
+
+/* messages */
+.chat{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:14px 15px;display:flex;
+  flex-direction:column;gap:9px;min-height:200px;max-height:420px;overflow-y:auto;}
+.bub{max-width:80%;padding:9px 14px;border-radius:16px;font-size:15px;line-height:1.4;position:relative;}
+.bub.in{align-self:flex-start;background:#efeaf9;color:#3b3550;border-bottom-left-radius:5px;}
+.bub.out{align-self:flex-end;background:#dcc9f4;color:#3d2a63;border-bottom-right-radius:5px;}
+.bub .n{display:block;font-size:11px;color:#8f7fb5;font-weight:600;margin-bottom:2px;}
+.bub .row{display:flex;gap:9px;align-items:flex-start;}
+.chathead{display:flex;align-items:center;gap:11px;padding:2px 2px 12px;}
+.av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;
+  font-size:13px;font-weight:700;flex:none;}
+.av.a1{background:linear-gradient(135deg,#c07ae0,#8f63c8);}
+.av.a2{background:linear-gradient(135deg,#6fb0e8,#3d7fc4);}
+.av.a3{background:linear-gradient(135deg,#f0a0c4,#d96aa8);}
+.av.a4{background:linear-gradient(135deg,#8fd6c0,#3fa189);}
+.av.a5{background:linear-gradient(135deg,#f5c47a,#e0983c);}
+.av.a6{background:linear-gradient(135deg,#b0b8d8,#7c85ad);}
+.who{font-size:15px;font-weight:600;color:#3b3550;}
+.who small{display:block;font-family:'Space Mono',monospace;font-size:11px;color:#a99bc7;font-weight:400;}
+.threadtabs{display:flex;gap:8px;margin-bottom:12px;}
+.threadtabs button{font-family:inherit;font-size:13.5px;border-radius:999px;padding:7px 15px;cursor:default;
+  border:1.5px solid var(--line);background:#fff;color:#7a6aa0;}
+.threadtabs button.on{background:#efe7fb;border-color:#cbb9ec;color:var(--purple);font-weight:600;}
+
+/* options */
+.opt{display:block;width:100%;text-align:left;font-family:inherit;font-size:15px;line-height:1.4;background:#fff;
+  border:1.5px solid var(--line);border-radius:11px;padding:12px 15px;cursor:pointer;margin-bottom:9px;color:#3b3550;}
+.opt:hover{border-color:var(--pill);background:#fdfbff;}
+.opt.right{background:#eaf7e8;border-color:#b6e0b0;color:#2f6b34;font-weight:500;}
+.opt.wrong{background:#fbeff3;border-color:#eec3d2;color:#9c3f5f;}
+.opt:disabled{cursor:default;}
+.fb{font-size:14px;line-height:1.5;padding:11px 14px;border-radius:10px;margin-top:4px;}
+.fb.ok{background:#eaf7e8;border:1.5px solid #b6e0b0;color:#2f6b34;}
+.fb.no{background:#fdf6d3;border:1.5px solid var(--noteline);color:#6a5a22;}
+
+textarea,input.t{width:100%;font-family:inherit;font-size:15px;line-height:1.5;color:#3b3550;background:#fff;
+  border:1.5px solid var(--line);border-radius:11px;padding:12px 14px;resize:vertical;}
+textarea:focus,input.t:focus{outline:none;border-color:var(--pill);}
+
+/* repeat rows */
+.rep{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:11px 14px;display:flex;
+  gap:12px;align-items:center;margin-bottom:10px;}
+.rep .tx{flex:1;font-size:15.4px;line-height:1.4;}
+.rep .tx small{display:block;font-size:12.5px;color:var(--mut);margin-top:2px;}
+.recbtn{background:#fdeef3;border:1.5px solid #f0c6d8;color:#a8437a;border-radius:999px;padding:8px 14px;
+  font-family:inherit;font-size:13.5px;cursor:pointer;display:inline-flex;gap:7px;align-items:center;white-space:nowrap;}
+.recbtn.rec{background:#c0396e;border-color:#a83060;color:#fff;}
+.recbtn .d{width:9px;height:9px;border-radius:50%;background:#d9548a;}
+.recbtn.rec .d{background:#fff;animation:pulse 1s infinite;}
+@keyframes pulse{50%{opacity:.25;}}
+audio{height:34px;max-width:210px;}
+
+/* posts */
+.post{background:#fff;border:1.5px solid var(--line);border-radius:14px;overflow:hidden;}
+.post .ph{display:flex;align-items:center;gap:11px;padding:11px 15px;border-bottom:1px solid #efe8fb;}
+.hd{font-size:14.5px;font-weight:600;color:#3b3550;}
+.tm{font-family:'Space Mono',monospace;font-size:11.5px;color:#a99bc7;}
+.cap{padding:12px 15px;font-size:15.4px;color:#3b3550;line-height:1.45;display:flex;gap:10px;align-items:flex-start;}
+.cmt{display:flex;gap:10px;align-items:flex-start;padding:10px 15px;border-top:1px solid #f2edfb;}
+.cmt .tx{flex:1;font-size:14.8px;line-height:1.4;}
+.cmt .tx u{text-decoration:none;font-weight:600;color:var(--blue);margin-right:6px;font-size:13.5px;}
+.cmt .hr{color:#e58aae;font-size:12.5px;white-space:nowrap;}
+
+.pillrow{display:flex;gap:9px;flex-wrap:wrap;}
+.pill{background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;color:#4f4770;
+  cursor:pointer;font-family:inherit;}
+.pill.on{background:#efe7fb;border-color:#cbb9ec;color:var(--purple);font-weight:600;}
+.pill.right{background:#eaf7e8;border-color:#b6e0b0;color:#2f6b34;}
+.pill.wrong{background:#fbeff3;border-color:#eec3d2;color:#9c3f5f;}
+
+.cert{background:linear-gradient(160deg,#fff,#f6f0fe);border:2px solid #cbb9ec;border-radius:16px;padding:30px 34px;text-align:center;}
+.cert h2{font-size:34px;margin-bottom:6px;}
+.cert .nm{font-family:'Baloo 2',cursive;font-size:30px;color:var(--purple);border-bottom:2px dashed #cbb9ec;
+  display:inline-block;padding:2px 30px 4px;margin:12px 0 10px;}
+.hide{display:none !important;}
+@media (max-width:860px){
+  .grid2,.grid3{grid-template-columns:1fr;}
+  body{padding:14px 12px 100px;}
+  .audiobox{display:none;}
+  h1{font-size:30px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="win">
+    <div class="bar">
+      <div class="sq"></div><h4 id="winTitle">final-task.exe</h4>
+      <div class="btns"><div class="btn">–</div><div class="btn">▢</div><div class="btn x">✕</div></div>
+    </div>
+    <div class="body" id="app"></div>
+  </div>
+</div>
+
+<div class="taskbar">
+  <button class="start" onclick="go('home')"><span class="sq"></span>start</button>
+  <button class="tbtn" id="tb1" onclick="go('l1')"><span class="dot" id="d1"></span>Level 1</button>
+  <button class="tbtn" id="tb2" onclick="go('l2')"><span class="dot" id="d2"></span>Level 2</button>
+  <button class="tbtn" id="tb3" onclick="go('l3')"><span class="dot" id="d3"></span>Level 3</button>
+  <div class="audiobox">
+    <label>voice</label>
+    <select id="voiceSel"></select>
+    <label>speed</label>
+    <input type="range" id="rate" min="0.6" max="1.15" step="0.05" value="0.92">
+    <span class="val" id="rateVal">0.92</span>
+  </div>
+</div>
+
+<script>
+/* ============================ AUDIO ============================ */
+let voices = [], chosenVoice = null;
+function loadVoices(){
+  voices = (window.speechSynthesis ? speechSynthesis.getVoices() : []).filter(v => /^en/i.test(v.lang));
+  const sel = document.getElementById('voiceSel');
+  sel.innerHTML = '';
+  if(!voices.length){ sel.innerHTML = '<option>default</option>'; return; }
+  voices.sort((a,b)=> (b.lang.indexOf('US')>-1) - (a.lang.indexOf('US')>-1));
+  voices.forEach((v,i)=>{
+    const o = document.createElement('option');
+    o.value = i; o.textContent = v.name.replace(/Microsoft |Google /,'') + ' (' + v.lang + ')';
+    sel.appendChild(o);
+  });
+  chosenVoice = voices[0];
+  sel.onchange = () => { chosenVoice = voices[sel.value]; speak('Hello! This is my voice.'); };
+}
+if(window.speechSynthesis){
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+document.getElementById('rate').oninput = e => document.getElementById('rateVal').textContent = e.target.value;
+
+function speak(text, btn){
+  if(!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  if(chosenVoice) u.voice = chosenVoice;
+  u.lang = chosenVoice ? chosenVoice.lang : 'en-US';
+  u.rate = parseFloat(document.getElementById('rate').value);
+  if(btn){
+    document.querySelectorAll('.speak.playing').forEach(b=>b.classList.remove('playing'));
+    btn.classList.add('playing');
+    u.onend = () => btn.classList.remove('playing');
+    u.onerror = () => btn.classList.remove('playing');
+  }
+  speechSynthesis.speak(u);
+}
+function sp(text, cls){
+  const safe = String(text).replace(/'/g,"\\'").replace(/"/g,'&quot;');
+  return '<button class="speak '+(cls||'')+'" onclick="speak(\''+safe+'\', this)" title="Listen">🔊</button>';
+}
+
+/* ============================ RECORDING ============================ */
+const recorders = {};
+async function toggleRec(btn, slot){
+  const st = recorders[slot];
+  if(st && st.rec && st.rec.state === 'recording'){
+    st.rec.stop(); return;
+  }
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    btn.insertAdjacentHTML('afterend','<span class="mini" style="margin-left:8px">Recording needs a browser with microphone access.</span>');
+    return;
+  }
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    const rec = new MediaRecorder(stream);
+    const chunks = [];
+    rec.ondataavailable = e => chunks.push(e.data);
+    rec.onstop = () => {
+      stream.getTracks().forEach(t=>t.stop());
+      const blob = new Blob(chunks, {type: rec.mimeType || 'audio/webm'});
+      const url = URL.createObjectURL(blob);
+      const holder = document.getElementById('play_'+slot);
+      if(holder) holder.innerHTML = '<audio controls src="'+url+'"></audio>';
+      btn.classList.remove('rec');
+      btn.innerHTML = '<span class="d"></span> Record again';
+    };
+    recorders[slot] = {rec};
+    rec.start();
+    btn.classList.add('rec');
+    btn.innerHTML = '<span class="d"></span> Stop';
+  }catch(err){
+    btn.insertAdjacentHTML('afterend','<span class="mini" style="margin-left:8px">Microphone blocked — you can still say it out loud.</span>');
+  }
+}
+function recRow(slot, label){
+  return '<div class="btnrow" style="margin-top:8px">'+
+    '<button class="recbtn" onclick="toggleRec(this,\''+slot+'\')"><span class="d"></span> '+(label||'Record yourself')+'</button>'+
+    '<span id="play_'+slot+'"></span></div>';
+}
+
+/* ============================ STATE ============================ */
+const state = { done:{l1:false,l2:false,l3:false}, score:{l1:0,l2:0}, name:'' };
+function markDone(l){
+  state.done[l] = true;
+  ['1','2','3'].forEach(n => {
+    document.getElementById('d'+n).classList.toggle('done', state.done['l'+n]);
+  });
+}
+function tabOn(id){
+  ['tb1','tb2','tb3'].forEach(t => document.getElementById(t).classList.toggle('on', t===id));
+}
+const app = document.getElementById('app');
+function setTitle(t){ document.getElementById('winTitle').textContent = t; }
+function scrollTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+
+/* ============================ HOME ============================ */
+function go(where){
+  if(where==='home') return home();
+  if(where==='l1') return level1();
+  if(where==='l2') return level2();
+  if(where==='l3') return level3();
+}
+function home(){
+  setTitle('final-task.exe'); tabOn('');
+  app.innerHTML = `
+    <div class="eyebrow">End of module · final training · do it out loud</div>
+    <h1>Everything you learned, <span class="b">in one hour.</span></h1>
+    <p class="lead" style="max-width:820px">Three levels. Level 1 is the abbreviations you'll actually meet as an
+    adult — at work and with friends. Level 2 is a real conversation that only moves forward when you answer.
+    Level 3 is an argument on the internet, and you have to take a side.</p>
+    <div class="note" style="margin:16px 0 20px;max-width:820px">
+      <b>Before you start:</b> everything here has a 🔊 button. The rule for the whole hour is simple —
+      <b>listen, repeat out loud, then answer out loud</b>. Reading silently doesn't count. Use the voice and speed
+      controls at the bottom right to slow me down if you need to.
+    </div>
+    <div class="grid3">
+      <div class="lvl">
+        <div class="top">
+          <div class="n">LEVEL 1 · about 15 min</div>
+          <h3>Decode the inbox</h3>
+          <p>Ten real messages full of abbreviations. You work out what they say, read them out loud, and then
+          choose the right short form yourself.</p>
+          <div class="tags"><span class="tag">Listen &amp; repeat</span><span class="tag">Abbreviations</span><span class="tag">Recording</span></div>
+        </div>
+        <div class="foot"><button class="k pri" onclick="go('l1')">Start level 1</button>
+          <span class="mini" id="s1"></span></div>
+      </div>
+      <div class="lvl">
+        <div class="top">
+          <div class="n">LEVEL 2 · about 25 min</div>
+          <h3>The relay</h3>
+          <p>Two chats, two people, one Friday night. Each of them asks you what the other one said — and the story
+          only continues when you report it correctly.</p>
+          <div class="tags"><span class="tag">Reported speech</span><span class="tag">Interactive story</span><span class="tag">Speaking</span></div>
+        </div>
+        <div class="foot"><button class="k pri" onclick="go('l2')">Start level 2</button>
+          <span class="mini" id="s2"></span></div>
+      </div>
+      <div class="lvl">
+        <div class="top">
+          <div class="n">LEVEL 3 · about 20 min</div>
+          <h3>The comment section</h3>
+          <p>A small business owner posted something and the internet split in two. You read it, take a side,
+          write your comment and say it out loud.</p>
+          <div class="tags"><span class="tag">Opinion</span><span class="tag">Vocabulary</span><span class="tag">Long recording</span></div>
+        </div>
+        <div class="foot"><button class="k pri" onclick="go('l3')">Start level 3</button>
+          <span class="mini" id="s3"></span></div>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:20px">
+      <div class="card">
+        <div class="rounder">How to work through this</div>
+        <p class="mini" style="font-size:14.2px;color:#5b5470">Do one level, stop, come back later. Nothing is timed
+        and nothing is saved — if you close the page you start that level again, which is fine. The second time
+        through is always the useful one.</p>
+      </div>
+      <div class="card">
+        <div class="rounder">If the voice doesn't play</div>
+        <p class="mini" style="font-size:14.2px;color:#5b5470">Click anywhere on the page first — browsers block audio
+        until you interact. Chrome and Edge have the best English voices. If there's still no sound, read the lines
+        out loud yourself; everything is written down.</p>
+      </div>
+    </div>`;
+  ['1','2','3'].forEach(n=>{
+    const el = document.getElementById('s'+n);
+    if(el && state.done['l'+n]) el.textContent = '✓ completed';
+  });
+  scrollTop();
+}
+
+/* ============================ LEVEL 1 ============================ */
+const L1_MSGS = [
+  {short:"Hi! FYI the meeting moved to 3pm. LMK if that works.",
+   full:"Hi! For your information, the meeting moved to 3pm. Let me know if that works.",
+   who:"Ana · work", av:"a2"},
+  {short:"BTW I'm WFH tomorrow, so email is better than calling.",
+   full:"By the way, I'm working from home tomorrow, so email is better than calling.",
+   who:"Ana · work", av:"a2"},
+  {short:"Can you send the file ASAP? The client is waiting.",
+   full:"Can you send the file as soon as possible? The client is waiting.",
+   who:"Marco · work", av:"a4"},
+  {short:"No rush — EOD is fine. NP if it's tomorrow.",
+   full:"No rush — the end of the day is fine. No problem if it's tomorrow.",
+   who:"Marco · work", av:"a4"},
+  {short:"IDK if I can make it TBH, work is crazy this week.",
+   full:"I don't know if I can make it, to be honest — work is crazy this week.",
+   who:"Bia", av:"a3"},
+  {short:"omw!! eta 10 min, sorry 🙈",
+   full:"On my way! Estimated time of arrival: ten minutes. Sorry!",
+   who:"Bia", av:"a3"},
+  {short:"IMO we should just move it to next week.",
+   full:"In my opinion, we should just move it to next week.",
+   who:"Ana · work", av:"a2"},
+  {short:"NVM, found it! Sorry for the three messages.",
+   full:"Never mind, I found it! Sorry for the three messages.",
+   who:"Marco · work", av:"a4"},
+  {short:"TY so much for today — you saved me!",
+   full:"Thank you so much for today — you saved me!",
+   who:"Bia", av:"a3"},
+  {short:"TL;DR: the client said yes, but they want it by Friday.",
+   full:"Too long, didn't read — in short: the client said yes, but they want it by Friday.",
+   who:"Ana · work", av:"a2"}
+];
+const L1_QUIZ = [
+  {q:"You're giving someone information they didn't ask for, but should know.", a:"FYI",
+   opts:["FYI","IMO","TBH"], why:"For your information. The most work-safe one on this whole list."},
+  {q:"You want them to answer whenever they've decided.", a:"LMK",
+   opts:["ASAP","LMK","NVM"], why:"Let me know. Neutral and polite — fine in any email."},
+  {q:"You need it today, not tomorrow.", a:"ASAP",
+   opts:["EOD","ASAP","BTW"], why:"As soon as possible. Said out loud as “ay-sap”."},
+  {q:"You'll be at home working tomorrow.", a:"WFH",
+   opts:["WFH","OOO","EOD"], why:"Working from home. Every workplace uses it now."},
+  {q:"You already left the house and you're on the road.", a:"OMW",
+   opts:["BRB","OMW","TTYL"], why:"On my way. BRB is 'be right back' — you haven't left."},
+  {q:"You want to say: forget what I just said.", a:"NVM",
+   opts:["IDK","NVM","IMO"], why:"Never mind. Soft and quick — it stops a thread politely."},
+  {q:"You're about to give your own opinion.", a:"IMO",
+   opts:["IMO","FYI","TY"], why:"In my opinion. IMHO adds 'humble' and sounds slightly ironic now."},
+  {q:"You're summarising a very long message in one line.", a:"TL;DR",
+   opts:["ICYMI","TL;DR","BTW"], why:"Too long, didn't read. Put it at the top and people love you."},
+  {q:"They apologised and you want to say it's completely fine.", a:"NP",
+   opts:["NP","OFC","PLS"], why:"No problem. Warmer than 'no worries' in writing, and shorter."},
+  {q:"You're telling them the deadline is the end of the day.", a:"EOD",
+   opts:["ETA","EOD","ASAP"], why:"End of day. ETA is when something arrives, not when it's due."}
+];
+const L1_REPEAT = [
+  {en:"By the way, I'm working from home tomorrow.", note:"btw · wfh"},
+  {en:"Let me know if that works for you.", note:"lmk"},
+  {en:"I'm afraid I can't make it — something came up.", note:"the polite cancellation"},
+  {en:"I'll send it over by the end of the day.", note:"eod"},
+  {en:"To be honest, I don't know if I can.", note:"tbh · idk"},
+  {en:"No problem at all, take your time.", note:"np"}
+];
+
+function level1(){
+  setTitle('decode.exe — level 1'); tabOn('tb1');
+  let html = `
+    <div class="stepline"><span class="badge">LEVEL 1</span>
+      <span>Decode the inbox · listen · repeat · choose</span></div>
+    <h2 style="margin-top:10px">Part A — ten messages, one adult inbox.</h2>
+    <p class="lead" style="max-width:860px;margin-bottom:6px">Read the short version. Say the full English out loud
+    <b>before</b> you press Reveal — that's the exercise. Then listen to it and repeat after the voice.</p>
+    <div style="margin-top:16px">`;
+  L1_MSGS.forEach((m,i)=>{
+    html += `
+      <div class="card" style="margin-bottom:12px">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div class="av ${m.av}">${m.who[0]}</div>
+          <div style="flex:1">
+            <div class="tm" style="margin-bottom:4px">${m.who}</div>
+            <div style="font-size:15.6px;line-height:1.4;color:#3b3550">${m.short}</div>
+            <div id="rev${i}" class="hide" style="margin-top:9px;padding-top:9px;border-top:1px solid #f2edfb">
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                ${sp(m.full)}
+                <div style="flex:1"><span class="p" style="font-size:15.4px;line-height:1.4">${m.full}</span></div>
+              </div>
+              ${recRow('l1m'+i,'Record your version')}
+            </div>
+          </div>
+          <button class="k ghost" id="btn${i}" onclick="revealL1(${i})">Reveal</button>
+        </div>
+      </div>`;
+  });
+  html += `</div>
+    <h2 style="margin-top:22px">Part B — now you choose the short form.</h2>
+    <p class="lead" style="max-width:860px">Ten situations. Which abbreviation would an adult actually type here?
+    Say your answer out loud first, then click.</p>
+    <div id="quizWrap" style="margin-top:14px"></div>
+    <div id="l1done" class="hide" style="margin-top:22px">
+      <h2>Part C — say the full sentences.</h2>
+      <p class="lead" style="max-width:860px;margin-bottom:14px">Listen, repeat out loud, then record yourself and
+      compare. Six sentences you can send to almost anybody.</p>
+      <div>` +
+      L1_REPEAT.map((r,i)=>`
+        <div class="rep">
+          ${sp(r.en)}
+          <div class="tx">${r.en}<small>${r.note}</small></div>
+          <button class="recbtn" onclick="toggleRec(this,'l1r${i}')"><span class="d"></span> Record</button>
+          <span id="play_l1r${i}"></span>
+        </div>`).join('') + `
+      </div>
+      <div class="note" style="margin-top:16px"><b>One last thing before level 2:</b> read all six again, but this
+      time as if you were sending them to your boss. Which words would you change? That question is the whole
+      module in one line.</div>
+      <div class="btnrow" style="margin-top:18px">
+        <button class="k pri" onclick="finishL1()">Finish level 1 →</button>
+        <button class="k ghost" onclick="go('home')">Back to menu</button>
+      </div>
+    </div>`;
+  app.innerHTML = html;
+  renderQuiz();
+  scrollTop();
+}
+function revealL1(i){
+  document.getElementById('rev'+i).classList.remove('hide');
+  const b = document.getElementById('btn'+i);
+  b.disabled = true; b.textContent = 'Revealed';
+  speak(L1_MSGS[i].full);
+}
+let quizIdx = 0, quizScore = 0;
+function renderQuiz(){
+  const w = document.getElementById('quizWrap');
+  if(quizIdx >= L1_QUIZ.length){
+    w.innerHTML = `<div class="fb ok" style="font-size:15px"><b>Part B done — ${quizScore} out of ${L1_QUIZ.length}.</b>
+      ${quizScore>=8?'That is an inbox you can survive.':'Worth doing again later — the ones you missed are the ones you will see most.'}</div>`;
+    document.getElementById('l1done').classList.remove('hide');
+    return;
+  }
+  const q = L1_QUIZ[quizIdx];
+  w.innerHTML = `
+    <div class="card">
+      <div class="stepline" style="margin-bottom:10px">
+        <span class="badge">${quizIdx+1} / ${L1_QUIZ.length}</span>
+        <div class="prog" style="flex:1"><i style="width:${(quizIdx/L1_QUIZ.length)*100}%"></i></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:12px">
+        ${sp(q.q)}<div style="font-size:16.5px;line-height:1.45;color:#3b3550;flex:1">${q.q}</div>
+      </div>
+      <div class="pillrow" id="qopts">
+        ${q.opts.map(o=>`<button class="pill" onclick="answerQuiz(this,'${o}')">${o}</button>`).join('')}
+      </div>
+      <div id="qfb"></div>
+    </div>`;
+}
+function answerQuiz(btn, choice){
+  const q = L1_QUIZ[quizIdx];
+  document.querySelectorAll('#qopts .pill').forEach(p=>{
+    p.disabled = true;
+    if(p.textContent === q.a) p.classList.add('right');
+    else if(p === btn) p.classList.add('wrong');
+  });
+  const ok = choice === q.a;
+  if(ok) quizScore++;
+  document.getElementById('qfb').innerHTML =
+    `<div class="fb ${ok?'ok':'no'}" style="margin-top:10px">${ok?'Yes — ':'It is <b>'+q.a+'</b>. '}${q.why}</div>
+     <div class="btnrow" style="margin-top:12px"><button class="k sec" onclick="nextQuiz()">Next →</button></div>`;
+  speak(q.a.replace(/;/,' ') + '. ' + q.why);
+}
+function nextQuiz(){ quizIdx++; renderQuiz(); }
+function finishL1(){
+  markDone('l1'); state.score.l1 = quizScore;
+  app.innerHTML = `
+    <div class="cert">
+      <div class="eyebrow">Level 1 complete</div>
+      <h2>You can read your inbox now.</h2>
+      <p class="lead" style="max-width:640px;margin:8px auto 0">Ten messages decoded, ${quizScore} out of
+      ${L1_QUIZ.length} short forms chosen correctly, and six sentences said out loud.</p>
+      <div class="btnrow" style="justify-content:center;margin-top:22px">
+        <button class="k pri" onclick="go('l2')">Go to level 2 →</button>
+        <button class="k ghost" onclick="go('home')">Back to menu</button>
+      </div>
+    </div>`;
+  scrollTop();
+}
+
+/* ============================ LEVEL 2 ============================ */
+/* The relay: two threads, information moves between them. */
+const L2 = [
+  { thread:'ana', head:'Ana asks you first.',
+    incoming:[["Hi! We're doing a team dinner on Friday at eight. Are you coming?","Ana"]],
+    task:{ type:'choice', to:'ana',
+      prompt:"Answer Ana — you're coming, but you want to bring your friend.",
+      opts:["Yes! Can I bring a friend?","Yes I will come with friend.","I am coming and I will to bring a friend."],
+      answer:0,
+      why:"Short and complete. The other two are understandable, but they read as translated — and in a chat, short wins." } },
+
+  { thread:'bia', head:'Two minutes later, Bia messages you.',
+    incoming:[["wait what's happening friday?? 👀","Bia"]],
+    task:{ type:'choice', to:'bia',
+      prompt:"Tell Bia what Ana said. Her exact words were: “We're doing a team dinner on Friday at eight.”",
+      opts:["Ana says they are doing a team dinner on Friday at eight.",
+            "Ana said they were doing a team dinner on Friday at eight.",
+            "Ana said they are doing a team dinner Friday at eight o'clock."],
+      answer:1,
+      why:"She said it earlier, so the words step back with you: <b>are doing → were doing</b>. This is the move the whole level is built on." } },
+
+  { thread:'bia', head:'',
+    incoming:[["omg yes I'm in. is it expensive??","Bia"]],
+    task:{ type:'speak', to:'bia', slot:'l2s1',
+      prompt:"Say this one out loud before you send it: tell her you don't know, and that you'll ask Ana.",
+      model:"I don't know — I'll ask her. tbh I think it's a normal restaurant, not a fancy one.",
+      why:"Notice what you can drop in a chat: <em>I don't know</em> becomes <em>idk</em>, and you don't need a subject in the second half." } },
+
+  { thread:'ana', head:'Back to Ana.',
+    incoming:[["I can't book the table until I know the number of people.","Ana"],
+              ["Also the restaurant won't hold it after eight thirty.","Ana"]],
+    task:{ type:'choice', to:'ana',
+      prompt:"Reply to Ana — your friend is coming, so that's two of you.",
+      opts:["Two of us then — me and a friend. We'll be on time!",
+            "We are two persons and we not will be late.",
+            "It's two peoples, we go to be there at the time."],
+      answer:0,
+      why:"<em>Two of us</em> is what people actually say. And 'people' is already plural — never 'peoples' or 'persons' here." } },
+
+  { thread:'bia', head:'Now Bia wants the details.',
+    incoming:[["so what did she say?? are we in or not 😭","Bia"]],
+    task:{ type:'choice', to:'bia',
+      prompt:"Report BOTH of Ana's messages. Her words: “I can't book the table until I know the number” and “The restaurant won't hold it after eight thirty.”",
+      opts:["She said she can't book the table, and the restaurant won't hold it after eight thirty.",
+            "She said she couldn't book the table until she knew the number, and it wouldn't be held after eight thirty.",
+            "She told that she couldn't book the table and the restaurant didn't hold it after eight thirty."],
+      answer:1,
+      why:"<b>can't → couldn't</b> and <b>won't → wouldn't</b>. Option three has the classic trap: <em>she told that</em>. It's <em>she told me</em> or <em>she said</em> — never <em>told that</em>." } },
+
+  { thread:'bia', head:'',
+    incoming:[["ok but ask her if we can bring wine","Bia"]],
+    task:{ type:'choice', to:'ana',
+      prompt:"Now you're writing to Ana. Bia asked you something — pass the question on.",
+      opts:["Bia asks if we can bring wine.",
+            "Bia asked if we could bring wine.",
+            "Bia asked me can we bring wine."],
+      answer:1,
+      why:"A reported question keeps normal word order — no inversion, no question mark. <em>asked if we could</em>, not 'asked can we'." } },
+
+  { thread:'ana', head:'',
+    incoming:[["Of course! But don't tell the manager, technically we're not supposed to.","Ana"]],
+    task:{ type:'choice', to:'bia',
+      prompt:"Report that back to Bia. Ana's words: “Don't tell the manager.”",
+      opts:["She told me don't tell the manager.",
+            "She said me not to tell the manager.",
+            "She told me not to tell the manager."],
+      answer:2,
+      why:"Orders become <em>told me to…</em> or <em>told me not to…</em>. Nothing else changes — and <em>said</em> can't take a person after it." } },
+
+  { thread:'ana', head:'Thursday night. Something changes.',
+    incoming:[["Hi — I'm so sorry, I have to cancel. My son is sick and I can't leave him.","Ana"],
+              ["I'll organise something for next month instead. Apologies for the short notice!","Ana"]],
+    task:{ type:'speak', to:'ana', slot:'l2s2',
+      prompt:"Say your reply out loud, then send it. Be warm — and keep it short.",
+      model:"Oh no, don't worry about it at all! I hope he feels better soon. Next month works for me 💛",
+      why:"<em>Don't worry about it</em> and <em>I hope he feels better</em> are the two phrases you'll reuse for the rest of your life in English." } },
+
+  { thread:'bia', head:'And now the part you have to break to Bia.',
+    incoming:[["I bought a dress for tomorrow 💃 what time are we meeting","Bia"]],
+    task:{ type:'type', to:'bia', slot:'l2t1',
+      prompt:"Type it yourself. Tell Bia the dinner is cancelled, say why, and say what Ana promised for next month.",
+      model:"So bad news — Ana said she had to cancel because her son was sick. She said she'd organise something next month instead 😭 the dress can wait!",
+      why:"Three reports in one message: <em>had to cancel</em>, <em>her son was sick</em>, <em>she'd organise something</em>. That's exactly what a real message looks like." } },
+
+  { thread:'bia', head:'',
+    incoming:[["ugh!! ok tell her I hope her son gets better","Bia"],
+              ["and that I'm holding her to next month 😤","Bia"]],
+    task:{ type:'type', to:'ana', slot:'l2t2',
+      prompt:"Last one. Write to Ana and pass on both of Bia's messages — report them, don't copy them.",
+      model:"Bia says she hopes your son gets better soon! And she said she's holding you to next month 😄",
+      why:"Bia said it seconds ago and it's still true, so <em>says she hopes</em> is perfectly natural. English lets you keep the present when the thing hasn't changed — both versions are correct here." } }
+];
+
+let l2i = 0, l2Score = 0, l2Threads = {ana:[], bia:[]}, l2Active = 'ana';
+function level2(){
+  setTitle('relay.exe — level 2'); tabOn('tb2');
+  l2i = 0; l2Score = 0; l2Threads = {ana:[], bia:[]}; l2Active = 'ana';
+  app.innerHTML = `
+    <div class="stepline"><span class="badge">LEVEL 2</span><span>The relay · ten beats · the story moves when you answer</span></div>
+    <h2 style="margin-top:10px">Friday night, two chats, and you in the middle.</h2>
+    <p class="lead" style="max-width:880px">Ana is your colleague. Bia is your friend. Neither of them talks to the
+    other — everything goes through you. Every time one of them asks what the other said, you have to
+    <b>report it</b>, not copy it.</p>
+    <div class="note" style="margin:14px 0 18px;max-width:880px"><b>Listen first, always.</b> Press 🔊 on every
+    message before you answer, and say your answer out loud before you click it. That's where the practice is —
+    clicking is just what moves the story.</div>
+    <div id="l2stage"></div>`;
+  renderL2();
+  scrollTop();
+}
+function renderL2(){
+  const stage = document.getElementById('l2stage');
+  if(l2i >= L2.length) return finishL2();
+  const step = L2[l2i];
+  l2Active = step.thread;
+  // push incoming into the thread once
+  if(!step._pushed){
+    step.incoming.forEach(m => l2Threads[step.thread].push({side:'in', text:m[0], who:m[1]}));
+    step._pushed = true;
+  }
+  const who = l2Active === 'ana'
+    ? {n:'Ana', s:'colleague · work chat', av:'a2', i:'A'}
+    : {n:'Bia', s:'friend · since forever', av:'a3', i:'B'};
+
+  let task = '';
+  const t = step.task;
+  const dest = t.to === 'ana' ? 'Ana' : 'Bia';
+  const destNote = t.to !== step.thread
+    ? `<div class="mini" style="margin-bottom:8px">↪ this one goes to <b class="p">${dest}</b>, not to ${who.n}.</div>` : '';
+
+  if(t.type === 'choice'){
+    task = `<div class="card">
+      <div class="rounder">Your turn — to ${dest}</div>
+      ${destNote}
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:12px">
+        ${sp(t.prompt.replace(/<[^>]+>/g,''))}
+        <div style="font-size:15.6px;line-height:1.45;flex:1">${t.prompt}</div>
+      </div>
+      <div id="l2opts">${t.opts.map((o,i)=>`<button class="opt" onclick="l2Answer(${i})">${o}</button>`).join('')}</div>
+      <div id="l2fb"></div>
+    </div>`;
+  } else if(t.type === 'speak'){
+    task = `<div class="card">
+      <div class="rounder">Your turn — say it out loud to ${dest}</div>
+      ${destNote}
+      <div style="font-size:15.6px;line-height:1.45;margin-bottom:10px">${t.prompt}</div>
+      ${recRow(t.slot,'Record your version')}
+      <div class="btnrow" style="margin-top:12px">
+        <button class="k ghost" onclick="l2Model()">Show one possible answer</button>
+      </div>
+      <div id="l2fb"></div>
+    </div>`;
+  } else {
+    task = `<div class="card">
+      <div class="rounder">Your turn — type it to ${dest}</div>
+      ${destNote}
+      <div style="font-size:15.6px;line-height:1.45;margin-bottom:10px">${t.prompt}</div>
+      <textarea id="l2input" rows="3" placeholder="Write your message here…"></textarea>
+      <div class="btnrow" style="margin-top:11px">
+        <button class="k sec" onclick="l2Type()">Send it</button>
+      </div>
+      <div id="l2fb"></div>
+    </div>`;
+  }
+
+  stage.innerHTML = `
+    <div class="stepline" style="margin-bottom:12px">
+      <span class="badge">${l2i+1} / ${L2.length}</span>
+      <div class="prog" style="flex:1"><i style="width:${(l2i/L2.length)*100}%"></i></div>
+    </div>
+    ${step.head ? `<div class="mini" style="margin-bottom:10px;font-size:14px">${step.head}</div>` : ''}
+    <div class="grid2" style="align-items:start">
+      <div>
+        <div class="threadtabs">
+          <button class="${l2Active==='ana'?'on':''}">Ana · work</button>
+          <button class="${l2Active==='bia'?'on':''}">Bia</button>
+        </div>
+        <div class="chathead">
+          <div class="av ${who.av}">${who.i}</div>
+          <div class="who">${who.n}<small>${who.s}</small></div>
+        </div>
+        <div class="chat" id="l2chat">${renderThread(l2Active)}</div>
+      </div>
+      <div>${task}</div>
+    </div>`;
+  const c = document.getElementById('l2chat');
+  if(c) c.scrollTop = c.scrollHeight;
+}
+function renderThread(name){
+  return l2Threads[name].map(m=>{
+    if(m.side==='in'){
+      return `<div class="bub in"><span class="n">${m.who}</span>
+        <div class="row"><div style="flex:1">${m.text}</div>${sp(m.text,'sm')}</div></div>`;
+    }
+    return `<div class="bub out"><span class="n">you</span>
+      <div class="row"><div style="flex:1">${m.text}</div>${sp(m.text,'sm')}</div></div>`;
+  }).join('');
+}
+function l2Answer(i){
+  const t = L2[l2i].task;
+  const ok = i === t.answer;
+  document.querySelectorAll('#l2opts .opt').forEach((o,idx)=>{
+    o.disabled = true;
+    if(idx === t.answer) o.classList.add('right');
+    else if(idx === i) o.classList.add('wrong');
+  });
+  if(ok) l2Score++;
+  const chosen = t.opts[t.answer];
+  document.getElementById('l2fb').innerHTML =
+    `<div class="fb ${ok?'ok':'no'}" style="margin-top:10px">${ok?'':'<b>Not that one.</b> '}${t.why}</div>
+     <div class="rep" style="margin-top:12px">${sp(chosen)}<div class="tx">${chosen}<small>listen, then say it out loud once before you continue</small></div></div>
+     <div class="btnrow"><button class="k sec" onclick="l2Next('${escapeQ(chosen)}')">Send &amp; continue →</button></div>`;
+  speak(chosen);
+}
+function l2Model(){
+  const t = L2[l2i].task;
+  document.getElementById('l2fb').innerHTML =
+    `<div class="rep" style="margin-top:12px">${sp(t.model)}<div class="tx">${t.model}<small>one possible version — yours doesn't have to match</small></div></div>
+     <div class="fb ok">${t.why}</div>
+     <div class="btnrow" style="margin-top:10px"><button class="k sec" onclick="l2Next('${escapeQ(t.model)}')">Send &amp; continue →</button></div>`;
+  speak(t.model);
+  l2Score++;
+}
+function l2Type(){
+  const t = L2[l2i].task;
+  const val = document.getElementById('l2input').value.trim();
+  if(!val){ document.getElementById('l2input').focus(); return; }
+  l2Score++;
+  document.getElementById('l2fb').innerHTML =
+    `<div class="fb ok" style="margin-top:11px"><b>Sent.</b> Now compare — this is one way a native speaker
+      would write it. Yours doesn't have to match, but check the reported parts.</div>
+     <div class="rep" style="margin-top:10px">${sp(t.model)}<div class="tx">${t.model}<small>read yours out loud, then this one</small></div></div>
+     <div class="fb no" style="margin-top:10px">${t.why}</div>
+     <div class="btnrow" style="margin-top:11px"><button class="k sec" onclick="l2Next('${escapeQ(val)}')">Continue →</button></div>`;
+  speak(t.model);
+}
+function escapeQ(s){ return String(s).replace(/\\/g,'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+function l2Next(sent){
+  const t = L2[l2i].task;
+  l2Threads[t.to].push({side:'out', text:sent});
+  l2i++;
+  renderL2();
+  scrollTop();
+}
+function finishL2(){
+  markDone('l2'); state.score.l2 = l2Score;
+  const story = "So Ana said they were doing a team dinner on Friday, and she told me she couldn't book the table until she knew the number. Then Bia asked if we could bring wine, and Ana said we could — but she told me not to tell the manager. And then on Thursday Ana said she had to cancel, because her son was sick. She said she'd organise something next month instead.";
+  app.innerHTML = `
+    <div class="stepline"><span class="badge">LEVEL 2</span><span>Complete · ${l2Score} of ${L2.length} beats</span></div>
+    <h2 style="margin-top:10px">Now tell the whole story, out loud, in one go.</h2>
+    <p class="lead" style="max-width:880px">This is the part that matters. Close your eyes if it helps and tell the
+    story from Monday to Thursday — what Ana said, what Bia asked, how it ended. Thirty to sixty seconds.
+    Record it, listen back, then record it once more.</p>
+    <div class="card" style="margin-top:16px">
+      <div class="rounder">Your recording</div>
+      <div class="mini" style="margin-bottom:10px">Use these to link it: <b class="p">so… then… after that… but then… in the end…</b></div>
+      ${recRow('l2story','Record your version of the story')}
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="rounder">Only after you've recorded — one possible version</div>
+      <div class="rep" style="margin-bottom:0">${sp(story)}<div class="tx" style="font-size:15px">${story}</div></div>
+      <div class="mini" style="margin-top:9px">Count them: <b>were doing · couldn't · asked if we could · told me not to ·
+      had to cancel · was sick · she'd organise</b>. Seven reports in five sentences.</div>
+    </div>
+    <div class="btnrow" style="margin-top:20px">
+      <button class="k pri" onclick="go('l3')">Go to level 3 →</button>
+      <button class="k ghost" onclick="level2()">Run level 2 again</button>
+      <button class="k ghost" onclick="go('home')">Back to menu</button>
+    </div>`;
+  scrollTop();
+}
+
+/* ============================ LEVEL 3 ============================ */
+const L3_MATCH = [
+  {c:"“Watched the whole video. Wouldn't watch it again.”", a:"mid"},
+  {c:"“She posted the screenshots of the entire conversation.”", a:"receipts"},
+  {c:"“He read my message on Monday and never replied.”", a:"left on read"},
+  {c:"“That caption exists to make people angry.”", a:"ragebait"},
+  {c:"“Someone finally said publicly what she did.”", a:"called her out"},
+  {c:"“Three thousand angry comments in one afternoon.”", a:"backlash"}
+];
+const L3_WORDS = ["mid","receipts","left on read","ragebait","called her out","backlash"];
+let l3Sel = {}, l3Score = 0;
+
+function level3(){
+  setTitle('comments.exe — level 3'); tabOn('tb3');
+  l3Sel = {}; l3Score = 0;
+  app.innerHTML = `
+    <div class="stepline"><span class="badge">LEVEL 3</span><span>The comment section · read · react · take a side</span></div>
+    <h2 style="margin-top:10px">A small bakery posted this on Monday. By Tuesday there were 4,000 comments.</h2>
+    <div class="grid2" style="margin-top:16px;align-items:start">
+      <div>
+        <div class="post">
+          <div class="ph"><div class="av a5">CB</div>
+            <div style="flex:1"><div class="hd">carol.bakes</div><div class="tm">Monday · 09:12</div></div>
+            <div class="tm">♡ 18.4k</div></div>
+          <div class="cap">${sp("An influencer with two hundred thousand followers emailed us this morning asking for a free birthday cake, a free delivery and a table for eight people. In exchange she offered us one story on Instagram. We said no. She replied that we were, quote, missing a huge opportunity. We are a bakery with four employees. This is that opportunity.")}
+            <div>An influencer with 200k followers emailed us this morning asking for a free birthday cake, free
+            delivery and a table for eight. In exchange she offered us <b>one story</b> on Instagram. We said no.
+            She replied that we were "missing a huge opportunity." We're a bakery with four employees. This is that
+            opportunity. 🎂</div></div>
+          <div class="cmt"><div class="av a2">R</div><div class="tx"><u>rafa.hs</u>Posting the email or it didn't happen. Where are the receipts?</div><div class="hr">♡ 3.1k</div></div>
+          <div class="cmt"><div class="av a3">N</div><div class="tx"><u>nina.costa</u>She called her out without even naming her. Iconic.</div><div class="hr">♡ 2.4k</div></div>
+          <div class="cmt"><div class="av a4">M</div><div class="tx"><u>marina.dias</u>Honestly this whole post is mid. Just say no and move on?</div><div class="hr">♡ 890</div></div>
+          <div class="cmt"><div class="av a6">T</div><div class="tx"><u>t.almeida</u>Influencers do work though. You're paying for reach, not for a story.</div><div class="hr">♡ 1.7k</div></div>
+          <div class="cmt"><div class="av a1">L</div><div class="tx"><u>lalaaa</u>my sister is a photographer and gets emails like this weekly. it's exhausting</div><div class="hr">♡ 640</div></div>
+        </div>
+        <div class="note" style="margin-top:14px"><b>Step one, before anything else:</b> press 🔊 on the post and
+        listen to the whole thing with your eyes closed. Then read it out loud yourself, once.</div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="rounder">Task 1 — six comments, six words</div>
+          <div class="mini" style="margin-bottom:12px">Click a comment, then click the word that describes it.</div>
+          <div id="matchWrap"></div>
+        </div>
+        <div class="card" style="margin-top:14px" id="t2wrap">
+          <div class="rounder">Task 2 — your comment</div>
+          <div style="font-size:15.4px;line-height:1.45;margin-bottom:10px">Write the comment you'd actually leave
+          under that post. <b>One line, under fifteen words.</b> Use one word from the list above.</div>
+          <input class="t" id="shortC" placeholder="Type your comment…">
+          <div class="btnrow" style="margin-top:11px"><button class="k sec" onclick="l3Short()">Post it</button></div>
+          <div id="shortFb"></div>
+        </div>
+      </div>
+    </div>
+    <div id="l3rest" class="hide"></div>`;
+  renderMatch();
+  scrollTop();
+}
+function renderMatch(){
+  const w = document.getElementById('matchWrap');
+  w.innerHTML = L3_MATCH.map((m,i)=>`
+    <div style="margin-bottom:12px">
+      <div style="display:flex;gap:9px;align-items:flex-start;margin-bottom:7px">
+        ${sp(m.c.replace(/[“”]/g,''),'sm')}
+        <div style="font-size:14.6px;line-height:1.4;flex:1">${m.c}</div>
+      </div>
+      <div class="pillrow" id="mrow${i}">
+        ${L3_WORDS.map(word=>`<button class="pill" style="font-size:13px;padding:5px 11px"
+          onclick="l3Match(${i},'${word}',this)">${word}</button>`).join('')}
+      </div>
+    </div>`).join('') + `<div id="matchFb"></div>`;
+}
+function l3Match(i, word, btn){
+  if(l3Sel[i]) return;
+  l3Sel[i] = word;
+  const right = L3_MATCH[i].a === word;
+  if(right) l3Score++;
+  document.querySelectorAll('#mrow'+i+' .pill').forEach(p=>{
+    p.disabled = true;
+    if(p.textContent === L3_MATCH[i].a) p.classList.add('right');
+    else if(p === btn) p.classList.add('wrong');
+  });
+  speak(L3_MATCH[i].a);
+  if(Object.keys(l3Sel).length === L3_MATCH.length){
+    document.getElementById('matchFb').innerHTML =
+      `<div class="fb ok"><b>${l3Score} out of ${L3_MATCH.length}.</b> Say all six words out loud now, then move to task 2.</div>`;
+  }
+}
+function l3Short(){
+  const v = document.getElementById('shortC').value.trim();
+  if(!v){ document.getElementById('shortC').focus(); return; }
+  const words = v.split(/\s+/).length;
+  document.getElementById('shortFb').innerHTML = `
+    <div class="fb ${words<=15?'ok':'no'}" style="margin-top:11px">
+      ${words<=15 ? '<b>'+words+' words — that is a real comment.</b> Now read it out loud exactly as you wrote it.'
+                  : '<b>'+words+' words.</b> That is an opinion, not a comment. Cut it down to fifteen and it gets sharper.'}
+    </div>
+    ${recRow('l3short','Record your comment')}
+    <div class="btnrow" style="margin-top:12px"><button class="k pri" onclick="l3Open()">Continue to the long version →</button></div>`;
+}
+function l3Open(){
+  const rest = document.getElementById('l3rest');
+  rest.classList.remove('hide');
+  rest.innerHTML = `
+    <hr style="border:none;border-top:1.5px solid var(--line);margin:26px 0 22px">
+    <h2>Task 3 — the long version, out loud.</h2>
+    <p class="lead" style="max-width:900px">Now say what you actually think, and <b>why</b>. Four or five sentences.
+    Was the bakery right to post it? Is asking for free things normal now, or is it rude? Would you have replied at
+    all? Record it, listen back, and record it again — the second one is always better.</p>
+    <div class="grid2" style="margin-top:16px;align-items:start">
+      <div class="card">
+        <div class="rounder">Openers — pick one and keep going</div>
+        <div style="font-size:15.2px;line-height:1.9">
+          <b class="p">Honestly, I think…</b><br>
+          <b class="p">I get why she posted it, but…</b><br>
+          <b class="p">The problem isn't X, it's Y.</b><br>
+          <b class="p">If she had just… nobody would…</b><br>
+          <b class="p">Both sides are wrong here, because…</b>
+        </div>
+        <div class="mini" style="margin-top:12px">And three moves to finish it: concede something → name the real
+        problem → say what should happen next.</div>
+      </div>
+      <div class="card">
+        <div class="rounder">Your long recording</div>
+        <div class="mini" style="margin-bottom:10px">Aim for forty seconds. One <b>because</b> minimum — that's what
+        turns an opinion into an argument.</div>
+        ${recRow('l3long','Record your opinion')}
+        <div class="btnrow" style="margin-top:14px">
+          <button class="k ghost" onclick="l3Reply()">Someone replied to you →</button>
+        </div>
+      </div>
+    </div>
+    <div id="l3reply"></div>`;
+  scrollTop();
+  rest.scrollIntoView({behavior:'smooth'});
+}
+function l3Reply(){
+  document.getElementById('l3reply').innerHTML = `
+    <hr style="border:none;border-top:1.5px solid var(--line);margin:26px 0 22px">
+    <h2>Task 4 — two replies landed under your comment.</h2>
+    <div class="grid2" style="margin-top:14px;align-items:start">
+      <div class="post">
+        <div class="ph"><div class="av a6">?</div>
+          <div style="flex:1"><div class="hd">your comment</div><div class="tm">just now</div></div>
+          <div class="tm">♡ 34</div></div>
+        <div class="cmt" style="border-top:none"><div class="av a2">V</div>
+          <div class="tx"><u>vitor.a</u>lol imagine writing an essay about a cake. it's not that deep</div>
+          <div class="hr">♡ 88</div></div>
+        <div class="cmt"><div class="av a3">S</div>
+          <div class="tx"><u>sofia.rgs</u>ok but she emailed privately and got posted publicly. that's not fair either</div>
+          <div class="hr">♡ 51</div></div>
+      </div>
+      <div class="card">
+        <div class="rounder">One reply each — and they're different kinds of reply</div>
+        <div style="font-size:15px;line-height:1.45;margin-bottom:8px"><b class="p">To Vitor</b> — he isn't arguing,
+        he's being rude. Answer without matching his tone.</div>
+        <input class="t" id="rep1" placeholder="Your reply to Vitor…">
+        <div style="font-size:15px;line-height:1.45;margin:14px 0 8px"><b class="p">To Sofia</b> — she has a real
+        point. Agree with part of it and keep your position.</div>
+        <input class="t" id="rep2" placeholder="Your reply to Sofia…">
+        <div class="btnrow" style="margin-top:13px"><button class="k sec" onclick="l3Done()">Send both →</button></div>
+        <div id="repFb"></div>
+      </div>
+    </div>`;
+  document.getElementById('l3reply').scrollIntoView({behavior:'smooth'});
+}
+function l3Done(){
+  const m1 = "lol ok. it's not that deep, you're right 👍";
+  const m2 = "Fair enough — I see your point about the email being private. I still think a bakery gets to say no publicly though.";
+  document.getElementById('repFb').innerHTML = `
+    <div class="fb ok" style="margin-top:12px"><b>Both sent.</b> Now compare with these, and read both out loud.</div>
+    <div class="rep" style="margin-top:10px">${sp(m1)}<div class="tx">${m1}<small>to Vitor — calm always wins. Not replying is also a complete answer.</small></div></div>
+    <div class="rep">${sp(m2)}<div class="tx">${m2}<small>to Sofia — <b>fair enough</b> + <b>I still think</b> is the whole formula.</small></div></div>
+    <div class="btnrow" style="margin-top:16px"><button class="k pri" onclick="finishAll()">Finish the module →</button></div>`;
+}
+function finishAll(){
+  markDone('l3');
+  app.innerHTML = `
+    <div class="cert">
+      <div class="eyebrow">End of module · final task complete</div>
+      <h2>You did the whole thing in English.</h2>
+      <div class="mini" style="font-size:15px;margin-top:10px">Certificate of completion — write your name:</div>
+      <input class="t" id="certName" placeholder="your name" style="max-width:340px;text-align:center;margin-top:12px"
+        oninput="document.getElementById('nm').textContent = this.value || '—'">
+      <div class="nm" id="nm">—</div>
+      <p class="lead" style="max-width:720px;margin:6px auto 0">Ten messages decoded · ten short forms chosen ·
+      ten beats of a conversation reported · six words matched · one comment, one opinion and two replies written
+      and said out loud.</p>
+      <div class="grid3" style="margin-top:22px;text-align:left">
+        <div class="card"><div class="rounder">You can now</div>
+          <div style="font-size:14.4px;line-height:1.5">Read a message full of abbreviations without stopping,
+          and write one back that fits the person you're writing to.</div></div>
+        <div class="card"><div class="rounder">You can now</div>
+          <div style="font-size:14.4px;line-height:1.5">Tell someone what a third person said — the words stepping
+          back with you, without thinking about it.</div></div>
+        <div class="card"><div class="rounder">You can now</div>
+          <div style="font-size:14.4px;line-height:1.5">Have an opinion in English, say why, and answer somebody
+          who disagrees without losing your temper or your grammar.</div></div>
+      </div>
+      <div class="note" style="margin-top:20px;text-align:left"><b>One last task, for this week:</b> the next time a
+      real message arrives in English, answer it in English — even if it's one word. That's the only homework that
+      actually transfers.</div>
+      <div class="btnrow" style="justify-content:center;margin-top:22px">
+        <button class="k sec" onclick="window.print()">Print / save as PDF</button>
+        <button class="k ghost" onclick="go('home')">Back to menu</button>
+      </div>
+    </div>`;
+  scrollTop();
+}
+
+/* boot */
+home();
+</script>
+</body>
+</html>
